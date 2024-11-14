@@ -12,7 +12,7 @@ const Login= () => {
           />
           <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
         </div>
-        <form>
+        <form action='http://localhost:3001/login' method='POST'>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
               Email
@@ -20,6 +20,7 @@ const Login= () => {
             <input
               type="email"
               id="email"
+              name='email'
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               placeholder="Enter your email"
             />
@@ -31,6 +32,7 @@ const Login= () => {
             <input
               type="password"
               id="password"
+              name='password'
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               placeholder="Enter your password"
             />

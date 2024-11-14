@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { cookies } from "next/headers";
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -9,6 +10,7 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import BusinessIcon from '@mui/icons-material/Business';
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import ScienceIcon from '@mui/icons-material/Science';
 const inter = Inter({ subsets: ["latin"] });
 interface DashboardButtonProps {
@@ -30,6 +32,7 @@ const DashboardButton:React.FC<DashboardButtonProps> = ({ title, icon ,onClick }
 export default function Home() {
   const router = useRouter();
 
+
   
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -40,7 +43,9 @@ export default function Home() {
         }}  />
         <DashboardButton title="Faculty Details" icon={<SchoolIcon fontSize="large" />} />
         <DashboardButton title="Student Electives" icon={<AssignmentIcon fontSize="large" />} />
-        <DashboardButton title="Student Achievements" icon={<StarIcon fontSize="large" />} />
+        <DashboardButton title="Student Achievements" icon={<StarIcon fontSize="large" />} onClick={()=>{
+          router.push('/placement');
+        }} />
         <DashboardButton title="Faculty Achievements" icon={<StarIcon fontSize="large" />} />
         <DashboardButton title="Gallery" icon={<PhotoLibraryIcon fontSize="large" />} />
         <DashboardButton title="Courses" icon={<MenuBookIcon fontSize="large" />} />
@@ -50,3 +55,23 @@ export default function Home() {
     </div>
   );
 }
+
+export async function getServerSideProps(context: { req: { headers: { cookie: any; }; }; }){
+  const rawtoken = context.req.headers.cookie;
+  const token = rawtoken.split('=')[1];
+  console.log(token);
+ if(!token){
+   return{
+    redirect:{
+      destination:'/login',
+      permanent:false
+    }
+   }
+ }else{
+   return{
+     props:{}
+   }
+ }
+}
+
+
