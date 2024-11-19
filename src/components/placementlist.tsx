@@ -46,8 +46,10 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
         {filteredPlacements.map((placement) => (
           <div
             key={placement._id}
-            className="bg-white shadow-md p-4 rounded-lg border border-gray-200 text-slate-950"
-
+            className="bg-white shadow-md p-4  border border-gray-200 text-slate-950
+            flex flex-row justify-between scree
+            "
+      
           >
             <h2 className="text-lg font-bold mb-2">{placement.NAME}</h2>
             <p><span className="font-semibold">Roll:</span> {placement.ROLL}</p>

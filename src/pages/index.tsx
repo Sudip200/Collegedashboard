@@ -6,6 +6,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import StarIcon from '@mui/icons-material/Star';
+import WorkIcon from '@mui/icons-material/Work';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -43,7 +44,7 @@ export default function Home() {
         }}  />
         <DashboardButton title="Faculty Details" icon={<SchoolIcon fontSize="large" />} />
         <DashboardButton title="Student Electives" icon={<AssignmentIcon fontSize="large" />} />
-        <DashboardButton title="Student Achievements" icon={<StarIcon fontSize="large" />} onClick={()=>{
+        <DashboardButton title="Student Placements" icon={<WorkIcon fontSize="large" />} onClick={()=>{
           router.push('/placement');
         }} />
         <DashboardButton title="Faculty Achievements" icon={<StarIcon fontSize="large" />} />
@@ -58,9 +59,8 @@ export default function Home() {
 
 export async function getServerSideProps(context: { req: { headers: { cookie: any; }; }; }){
   const rawtoken = context.req.headers.cookie;
-  const token = rawtoken.split('=')[1];
-  console.log(token);
- if(!token){
+ 
+ if(!rawtoken){
    return{
     redirect:{
       destination:'/login',

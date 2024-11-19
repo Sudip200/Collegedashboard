@@ -80,7 +80,7 @@ export default function Home() {
             key={result._id}
             className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-row items-start justify-between"
           >
-            <ul className="flex flex-row items-center gap-20">
+            <ul className="flex flex-col items-center   sm:flex sm:flex-row sm:items-center sm:gap-20 sm:justify-between">
               <img src="/user.png" alt="user" className="w-16 h-16 rounded-full border" />
               <li><strong></strong> {result.NAME}</li>
               <li><strong>Roll:</strong> {result.ROLL}</li>

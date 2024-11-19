@@ -1,6 +1,9 @@
 import React from 'react';
 
+
 const Login= () => {
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
@@ -20,8 +23,8 @@ const Login= () => {
             <input
               type="email"
               id="email"
-              name='email'
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              name="email"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500 text-slate-800"
               placeholder="Enter your email"
             />
           </div>
@@ -32,8 +35,8 @@ const Login= () => {
             <input
               type="password"
               id="password"
-              name='password'
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              name="password"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500 text-slate-900"
               placeholder="Enter your password"
             />
           </div>
