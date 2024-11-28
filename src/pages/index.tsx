@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { cookies } from "next/headers";
+import { useState } from "react";
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -10,9 +11,11 @@ import WorkIcon from '@mui/icons-material/Work';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import BusinessIcon from '@mui/icons-material/Business';
+import PlacementContent from "./placement/placement2023";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import ScienceIcon from '@mui/icons-material/Science';
+import StudentResult from "./studentres";
 const inter = Inter({ subsets: ["latin"] });
 interface DashboardButtonProps {
   title: string;
@@ -22,36 +25,68 @@ interface DashboardButtonProps {
 
 const DashboardButton:React.FC<DashboardButtonProps> = ({ title, icon ,onClick }) => {
   return (
-    <button className="bg-white shadow-lg p-4 rounded-lg flex flex-col items-center justify-center hover:bg-gray-100 transition duration-200" 
+    <button className="flex flex-row justify-start gap-6 items-center w-full " 
     onClick={onClick}
      >
-      <div className="text-blue-500 mb-2">{icon}</div>
+      <div className="text-blue-500 mb-5 ml-3">{icon}</div>
       <p className="text-gray-800 font-semibold">{title}</p>
     </button>
   );
 };
 export default function Home() {
   const router = useRouter();
+  const [content, setContent] =useState('studentres');
 
-
+ function renderContent():JSX.Element{
+  switch(content){
+    case 'studentres':
+      return <StudentResult />;
+    case 'faculty':
+      return <h1>Faculty</h1>;
+    case 'electives':
+      return <h1>Electives</h1>;
+    case 'placements':
+      return <PlacementContent />;
+    case 'achievements':
+      return <h1>Achievements</h1>;
+    case 'gallery':
+      return <h1>Gallery</h1>;
+    default:
+      return <h1>Default</h1>;
+ }
+}
   
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-        <DashboardButton title="Student Information" icon={<PersonIcon fontSize="large" />} onClick={()=>{
-          router.push('/studentres');
+    <div className="max-h-screen overflow-y-scroll  bg-gray-100 p-6">
+
+   <div className=" min-h-screen grid grid-cols-4 border-slate-700 grid-rows-4 gap-6">
+    <div className=" bg-blue-600 col-start-1 col-span-1 row-start-1 row-span-1 rounded-md flex justify-center flex-col items-center">
+  <img src="/pic.png" alt="logo" className="w-20 h-20 mx-auto my-5 rounded-full" /> 
+  <div className="pb-3"><h2>Biswajit Master</h2></div>
+    </div>
+      <div className=" rounded shadow-lg row-start-2 row-span-full col-span-1 col-span-1 shadow rounded-lg">
+        <DashboardButton title="Student Information" icon={<PersonIcon  />} onClick={()=>{
+          setContent('studentres');
         }}  />
-        <DashboardButton title="Faculty Details" icon={<SchoolIcon fontSize="large" />} />
-        <DashboardButton title="Student Electives" icon={<AssignmentIcon fontSize="large" />} />
-        <DashboardButton title="Student Placements" icon={<WorkIcon fontSize="large" />} onClick={()=>{
-          router.push('/placement');
+        <DashboardButton title="Faculty Details" icon={<SchoolIcon />}  
+        onClick={()=>{
+          setContent('faculty');
+        }}
+        />
+        <DashboardButton title="Student Electives" icon={<AssignmentIcon  />} />
+        <DashboardButton title="Student Placements" icon={<WorkIcon  />} onClick={()=>{
+          setContent('placements');
         }} />
-        <DashboardButton title="Faculty Achievements" icon={<StarIcon fontSize="large" />} />
-        <DashboardButton title="Gallery" icon={<PhotoLibraryIcon fontSize="large" />} />
-        <DashboardButton title="Courses" icon={<MenuBookIcon fontSize="large" />} />
-        <DashboardButton title="NBA Details" icon={<BusinessIcon fontSize="large" />} />
-        <DashboardButton title="Classrooms & Labs" icon={<ScienceIcon fontSize="large" />} />
+        <DashboardButton title="Faculty Achievements" icon={<StarIcon  />} />
+        <DashboardButton title="Gallery" icon={<PhotoLibraryIcon  />} />
+        <DashboardButton title="Courses" icon={<MenuBookIcon  />} />
+        <DashboardButton title="NBA Details" icon={<BusinessIcon  />} />
+        <DashboardButton title="Classrooms & Labs" icon={<ScienceIcon  />} />
+      </div>
+      <div id="main-container" className=" col-start-2 col-span-3 row-start-1 row-span-4 max-h-screen overflow-y-scroll">
+        {renderContent()}
+      </div>
+       
       </div>
     </div>
   );

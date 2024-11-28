@@ -1,4 +1,5 @@
 // components/PlacementList.tsx
+import { GetServerSideProps } from 'next/types';
 import React, { useState, useEffect } from 'react';
 
 type Placement = {
@@ -33,7 +34,7 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
   }, [searchQuery, placements]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container ">
       <input
         type="text"
         placeholder="Search by name, company, or post"
@@ -41,28 +42,38 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-
+ <div  className=" grid grid-cols-7 items-center justify-around  bg-white shadow-md  border border-gray-200 text-slate-950">
+              <div><span >Name</span> </div>
+              <div><span >Roll</span> </div>
+              <div><span >Gender</span> </div>
+              <div><span>Mobile</span> </div>
+              <div><span >Company</span> </div>
+              <div><span>Post</span> </div>
+              <div><span>Salary</span> </div>
+     
+          </div>
       <div className="grid gap-6">
         {filteredPlacements.map((placement) => (
           <div
             key={placement._id}
-            className="bg-white shadow-md p-4  border border-gray-200 text-slate-950
-            flex flex-row justify-between scree
-            "
+            className="  grid grid-cols-7 items-center justify-around text-slate-950"
       
           >
-            <h2 className="text-lg font-bold mb-2">{placement.NAME}</h2>
-            <p><span className="font-semibold">Roll:</span> {placement.ROLL}</p>
-            <p><span className="font-semibold">Gender:</span> {placement.Gender}</p>
-            <p><span className="font-semibold">Mobile:</span> {placement.MOBILE}</p>
-            <p><span className="font-semibold">Company:</span> {placement.Company}</p>
-            <p><span className="font-semibold">Post:</span> {placement.Post}</p>
-            <p><span className="font-semibold">Salary:</span> {placement.Salary || 'N/A'}</p>
+           
+                <div className="">{placement.NAME}</div>
+                  <div className="">{placement.ROLL}</div>
+                  <div className="">{placement.Gender}</div>
+                  <div className="">{placement.MOBILE}</div>
+                  <div className="">{placement.Company}</div>
+                  <div className="">{placement.Post}</div>
+                  <div className="">{placement.Salary || 'N/A'}</div>
+     
           </div>
         ))}
       </div>
     </div>
   );
 };
+
 
 export default PlacementList;

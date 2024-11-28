@@ -23,7 +23,7 @@ interface Result {
   MAR: number;
 }
 
-export default function Home() {
+export default function StudentResult() {
   const [results, setResults] = useState<Result[]>([]);
   const [selectedResult, setSelectedResult] = useState<Result | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -60,7 +60,7 @@ export default function Home() {
   },[searchQuery,results])
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className=" bg-gray-100 ">
       <h1 className="text-3xl font-bold text-center mb-8 text-slate-900">Student Results</h1>
       <input
         type="text"
@@ -78,22 +78,23 @@ export default function Home() {
         {filteredResults.map((result) => (
           <div
             key={result._id}
-            className="bg-white shadow-md rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 flex flex-row items-start justify-between"
+            className="bg-white shadow-md rounded-lg p-2  hover:shadow-xl transition-shadow duration-300 flex flex-row items-start justify-between"
           >
-            <ul className="flex flex-col items-center   sm:flex sm:flex-row sm:items-center sm:gap-20 sm:justify-between">
-              <img src="/user.png" alt="user" className="w-16 h-16 rounded-full border" />
-              <li><strong></strong> {result.NAME}</li>
-              <li><strong>Roll:</strong> {result.ROLL}</li>
-              <li><strong>SGPA1:</strong> {result.SGPA1}</li>
-              <li><strong>SGPA2:</strong> {result.SGPA2}</li>
-              <li><strong>YGPA:</strong> {result.YGPA}</li>
-            </ul>
-            <button
+            <div className="grid grid-cols-7 gap-1 justify-stretch items-center">
+              <div><img src="/pic.png" alt="user" className="w-10 h-10 rounded-full border" /></div>
+              <div ><strong></strong> {result.NAME}</div>
+              <div><strong>Roll:</strong> {result.ROLL}</div>
+              <div><strong>SGPA1:</strong> {result.SGPA1}</div>
+              <div><strong>SGPA2:</strong> {result.SGPA2}</div>
+              <div><strong>YGPA:</strong> {result.YGPA}</div>
+              <div> <button
               onClick={() => setSelectedResult(result)}
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+              className=" bg-blue-500 text-white  rounded-lg hover:bg-blue-600 transition-colors h-7" 
             >
               View Details
-            </button>
+            </button></div>
+            </div>
+           
           </div>
         ))}
       </div>
