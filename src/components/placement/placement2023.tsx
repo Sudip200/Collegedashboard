@@ -1,6 +1,6 @@
 // pages/index.tsx
 import { GetServerSideProps } from 'next';
-import PlacementList from '../../components/placementlist';
+import PlacementList from '../placementlist';
 import { useEffect ,useState } from 'react';
 
 type Placement = {

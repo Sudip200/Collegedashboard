@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { useEffect, useState } from 'react';
 
 // Define the structure of the data
@@ -28,15 +29,22 @@ export default function StudentResult() {
   const [selectedResult, setSelectedResult] = useState<Result | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
+  const [ total , setTotal] = useState<number>(0);
 
   // Fetch data from API
   useEffect(() => {
     const searchQueryLower = searchQuery.toLowerCase();
     const fetchResults = async () => {
       try {
-        const response = await fetch('http://localhost:3001/results');
+        const response = await fetch('http://localhost:3001/results',
+
+        { mode: 'cors',  
+          credentials: 'include',}
+
+        );
         const data = await response.json();
         setResults(data);
+        setTotal(data.length);
         setFilteredResults(data)
        
 
@@ -70,7 +78,10 @@ export default function StudentResult() {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-
+      <div className="text-slate-900">
+        <p>Total number of students: {total}</p>
+        
+      </div>
 
 
 
@@ -80,19 +91,20 @@ export default function StudentResult() {
             key={result._id}
             className="bg-white shadow-md rounded-lg p-2  hover:shadow-xl transition-shadow duration-300 flex flex-row items-start justify-between"
           >
-            <div className="grid grid-cols-7 gap-1 justify-stretch items-center">
+            <div className="grid grid-cols-3 sm:grid-cols-6 sm:gap-8  w-full items-center ">
               <div><img src="/pic.png" alt="user" className="w-10 h-10 rounded-full border" /></div>
               <div ><strong></strong> {result.NAME}</div>
               <div><strong>Roll:</strong> {result.ROLL}</div>
-              <div><strong>SGPA1:</strong> {result.SGPA1}</div>
-              <div><strong>SGPA2:</strong> {result.SGPA2}</div>
-              <div><strong>YGPA:</strong> {result.YGPA}</div>
-              <div> <button
+                <div className="hidden sm:block"><strong>SGPA1:</strong> {result.SGPA1}</div>
+                <div className="hidden sm:block"><strong>SGPA2:</strong> {result.SGPA2}</div>
+                <div className="hidden sm:block"><strong>YGPA:</strong> {result.YGPA}</div>
+             </div>
+             <div> <button
               onClick={() => setSelectedResult(result)}
-              className=" bg-blue-500 text-white  rounded-lg hover:bg-blue-600 transition-colors h-7" 
+              className=" bg-blue-500 text-white  lg:w-24 rounded-lg hover:bg-blue-600 transition-colors h-7" 
             >
-              View Details
-            </button></div>
+              View
+            </button>
             </div>
            
           </div>
@@ -104,6 +116,7 @@ export default function StudentResult() {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
             <h2 className="text-2xl font-bold mb-4 text-slate-900">Detailed Course Grades</h2>
+            <img src="/pic.png" alt="user" className="w-20 h-20 rounded-full border" />
             <ul className="space-y-2 text-slate-700">
               <li><strong>Name:</strong> {selectedResult.NAME}</li>
               <li><strong>Roll:</strong> {selectedResult.ROLL}</li>

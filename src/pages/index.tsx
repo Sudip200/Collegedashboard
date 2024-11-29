@@ -11,11 +11,12 @@ import WorkIcon from '@mui/icons-material/Work';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import BusinessIcon from '@mui/icons-material/Business';
-import PlacementContent from "./placement/placement2023";
+import PlacementContent from "../components/placement/placement2023";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import ScienceIcon from '@mui/icons-material/Science';
-import StudentResult from "./studentres";
+import StudentResult from "../components/studentres";
+import Courses from "@/components/courses";
 const inter = Inter({ subsets: ["latin"] });
 interface DashboardButtonProps {
   title: string;
@@ -43,8 +44,8 @@ export default function Home() {
       return <StudentResult />;
     case 'faculty':
       return <h1>Faculty</h1>;
-    case 'electives':
-      return <h1>Electives</h1>;
+    case 'Courses':
+      return <Courses />;
     case 'placements':
       return <PlacementContent />;
     case 'achievements':
@@ -60,11 +61,11 @@ export default function Home() {
     <div className="max-h-screen overflow-y-scroll  bg-gray-100 p-6">
 
    <div className=" min-h-screen grid grid-cols-4 border-slate-700 grid-rows-4 gap-6">
-    <div className=" bg-blue-600 col-start-1 col-span-1 row-start-1 row-span-1 rounded-md flex justify-center flex-col items-center">
+    <div id="admin" className=" bg-blue-600 col-start-1 col-span-1 row-start-1 row-span-1 rounded-md flex justify-center flex-col items-center">
   <img src="/pic.png" alt="logo" className="w-20 h-20 mx-auto my-5 rounded-full" /> 
   <div className="pb-3"><h2>Biswajit Master</h2></div>
     </div>
-      <div className=" rounded shadow-lg row-start-2 row-span-full col-span-1 col-span-1 shadow rounded-lg">
+      <div id="menu" className="rounded shadow-lg row-start-2 row-span-full col-span-1 col-span-1 shadow rounded-lg">
         <DashboardButton title="Student Information" icon={<PersonIcon  />} onClick={()=>{
           setContent('studentres');
         }}  />
@@ -79,7 +80,11 @@ export default function Home() {
         }} />
         <DashboardButton title="Faculty Achievements" icon={<StarIcon  />} />
         <DashboardButton title="Gallery" icon={<PhotoLibraryIcon  />} />
-        <DashboardButton title="Courses" icon={<MenuBookIcon  />} />
+        <DashboardButton title="Courses" icon={<MenuBookIcon  />} 
+        onClick={()=>{
+          setContent('Courses');
+        }}
+        />
         <DashboardButton title="NBA Details" icon={<BusinessIcon  />} />
         <DashboardButton title="Classrooms & Labs" icon={<ScienceIcon  />} />
       </div>

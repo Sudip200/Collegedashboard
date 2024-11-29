@@ -30,4 +30,19 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+
+}
+
+@media only screen and (max-width: 900px) {
+ #menu{
+    display: none;
+ }
+ #admin{
+    display: none;
+ }
+ #main-container{
+  grid-row : 1 / span 4;
+  grid-column: 1 / span 4;
+ }
 }
