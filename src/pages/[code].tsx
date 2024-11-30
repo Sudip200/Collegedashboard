@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { handleClientScriptLoad } from 'next/script';
 
 // Define the structure of the data
 interface Result {
@@ -28,6 +29,7 @@ interface Result {
 export default function Attendence() {
   const [results, setResults] = useState<Result[]>([]);
   const [selectedResult, setSelectedResult] = useState<Result | null>(null);
+  const [oneClicked, setOneClicked] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
   const [ fromRoll, setFromRoll] = useState<number>(0);
@@ -81,8 +83,69 @@ export default function Attendence() {
     
   },[searchQuery,results,fromRoll,toRoll])
 
+  function handleCheckboxChange(id:string,sta:string) {
+    if(sta=='p'){
+      const checkbox = document.getElementById(id+'a');
+      if (checkbox) {
+        checkbox.setAttribute('disabled', 'true');
+      }
+    }else if(sta=='a'){
+      const checkbox = document.getElementById(id+'p');
+      if (checkbox) {
+        checkbox.setAttribute('disabled', 'true');
+      }
+      
+    }else{
+      //disable both
+      const checkbox = document.getElementById(id+'a');
+      if (checkbox) {
+        checkbox.setAttribute('disabled', 'true');
+      }
+      const checkbox1 = document.getElementById(id+'p');
+      if (checkbox1) {
+        checkbox1.setAttribute('disabled', 'true');
+      }
+    }
+  
+  }
+ async function attendence(status:boolean , roll:number,id:string){  {
+   if(status){
+      await fetch('http://localhost:3001/attend',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ROLL:roll,
+          CourseCode:router.query.code,
+          status:'present'
+        }),
+      }).then((response) =>{
+        console.log(response)
+        response.json()
+        handleCheckboxChange(id, 'both')
+      })
+   }else{
+    await fetch('http://localhost:3001/attend',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ROLL:roll,
+        CourseCode:router.query.code,
+        status:'absent'
+      }),
+    }).then((response) => {
+      console.log(response)
+      response.json()
+      handleCheckboxChange(id, 'both')
+    })
+   }
+  }
+ }
   return (
-    <div className=" bg-gray-100 h-screen">
+    <div className=" bg-gray-100 h-screen min-w-max">
       <h1 className="text-3xl font-bold text-center mb-8 text-slate-900">Take Attendence {router.query.code}  </h1>
       {/* Select roll number range */}
         
@@ -137,10 +200,25 @@ export default function Attendence() {
           <td className="py-2 px-4">{result.ROLL}</td>
           <td className="py-2 px-4">
          
-            <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 " />
+            <input type="checkbox" id={result.NAME+result.ROLL+'p'} className="form-checkbox h-5 w-5 text-blue-600 " onChange={(e)=>{
+              if(e.target.checked){
+               attendence(true, result.ROLL, result.NAME+result.ROLL)
+              // handleCheckboxChange(result.NAME+result.ROLL, 'p')
+              }
+            }
+            } />
           </td>
           <td className="py-2 px-4">
-            <input type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 " />
+            <input   id={result.NAME+result.ROLL+'a'} type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 "  
+
+            onChange={(e)=>{
+              if(e.target.checked){
+                attendence(false, result.ROLL, result.NAME+result.ROLL)
+              // handleCheckboxChange(result.NAME+result.ROLL, 'a')
+              }
+            }
+            }
+            />
           </td>
       
         </tr>

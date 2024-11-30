@@ -78,7 +78,7 @@ export default function StudentResult() {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      <div className="text-slate-900">
+      <div className="text-slate-900 pb-7">
         <p>Total number of students: {total}</p>
         
       </div>
@@ -91,9 +91,9 @@ export default function StudentResult() {
             key={result._id}
             className="bg-white shadow-md rounded-lg p-2  hover:shadow-xl transition-shadow duration-300 flex flex-row items-start justify-between"
           >
-            <div className="grid grid-cols-3 sm:grid-cols-6 sm:gap-8  w-full items-center ">
+            <div className="grid grid-cols-3 gap-1 justify-items-start sm:grid-cols-6 sm:gap-8  w-full items-center ">
               <div><img src="/pic.png" alt="user" className="w-10 h-10 rounded-full border" /></div>
-              <div ><strong></strong> {result.NAME}</div>
+              <div className='' ><strong></strong> {result.NAME}</div>
               <div><strong>Roll:</strong> {result.ROLL}</div>
                 <div className="hidden sm:block"><strong>SGPA1:</strong> {result.SGPA1}</div>
                 <div className="hidden sm:block"><strong>SGPA2:</strong> {result.SGPA2}</div>
@@ -101,7 +101,7 @@ export default function StudentResult() {
              </div>
              <div> <button
               onClick={() => setSelectedResult(result)}
-              className=" bg-blue-500 text-white  lg:w-24 rounded-lg hover:bg-blue-600 transition-colors h-7" 
+              className="w-11 bg-white  text-blue-600 sm:bg-blue-600 sm:text-white   lg:w-24 rounded-lg hover:bg-blue-800 transition-colors h-7" 
             >
               View
             </button>
@@ -113,30 +113,77 @@ export default function StudentResult() {
 
       {/* Modal for displaying detailed information */}
       {selectedResult && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4 text-slate-900">Detailed Course Grades</h2>
-            <img src="/pic.png" alt="user" className="w-20 h-20 rounded-full border" />
-            <ul className="space-y-2 text-slate-700">
-              <li><strong>Name:</strong> {selectedResult.NAME}</li>
-              <li><strong>Roll:</strong> {selectedResult.ROLL}</li>
-              <li><strong>Semester:</strong> {selectedResult.SEMETER}</li>
-              <li><strong>BSCH201:</strong> {selectedResult.BSCH201}</li>
-              <li><strong>BSM201:</strong> {selectedResult.BSM201}</li>
-              <li><strong>ESCS201:</strong> {selectedResult.ESCS201}</li>
-              <li><strong>HMHU201:</strong> {selectedResult.HMHU201}</li>
-              <li><strong>BSCH291:</strong> {selectedResult.BSCH291}</li>
-              <li><strong>ESCS291:</strong> {selectedResult.ESCS291}</li>
-              <li><strong>ESME291:</strong> {selectedResult.ESME291}</li>
-              <li><strong>HMHU291:</strong> {selectedResult.HMHU291}</li>
-              <li><strong>SGPA1:</strong> {selectedResult.SGPA1}</li>
-              <li><strong>SGPA2:</strong> {selectedResult.SGPA2}</li>
-              <li><strong>YGPA:</strong> {selectedResult.YGPA}</li>
-              <li><strong>DGPA:</strong> {selectedResult.DGPA}</li>
-            </ul>
+        <div className="  fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 max-w-md sm:w-full w-4/5 flex justify-center flex-col">
+            <h2 className="text-2xl font-bold mb-4 text-slate-900 text-center">Student Information</h2>
+            <img src="/pic.png" alt="user" className="w-20 h-20 rounded-full border " />
+            <table className="text-left border text-slate-950 text-sm sm:text-base">
+              <tbody className='h-1/4'>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">Name:</td>
+              <td className="p-1">{selectedResult.NAME}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">Roll:</td>
+              <td className="p-1">{selectedResult.ROLL}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">Semester:</td>
+              <td className="p-1">{selectedResult.SEMETER}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">BSCH201:</td>
+              <td className="p-1">{selectedResult.BSCH201}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">BSM201:</td>
+              <td className="p-1">{selectedResult.BSM201}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">ESCS201:</td>
+              <td className="p-1">{selectedResult.ESCS201}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">HMHU201:</td>
+              <td className="p-1">{selectedResult.HMHU201}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">BSCH291:</td>
+              <td className="p-1">{selectedResult.BSCH291}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">ESCS291:</td>
+              <td className="p-1">{selectedResult.ESCS291}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">ESME291:</td>
+              <td className="p-1">{selectedResult.ESME291}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">HMHU291:</td>
+              <td className="p-1">{selectedResult.HMHU291}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black ">
+              <td className="p-1 font-bold ">SGPA1:</td>
+              <td className="p-1">{selectedResult.SGPA1}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">SGPA2:</td>
+              <td className="p-1">{selectedResult.SGPA2}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">YGPA:</td>
+              <td className="p-1">{selectedResult.YGPA}</td>
+              </tr>
+              <tr className="bg-sky-100 border border-black">
+              <td className="p-1 font-bold">DGPA:</td>
+              <td className="p-1">{selectedResult.DGPA}</td>
+              </tr>
+              </tbody>
+            </table>
             <button
               onClick={() => setSelectedResult(null)}
-              className="mt-6 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors"
+              className="mt-6 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-red-900 transition-colors"
             >
               Close
             </button>

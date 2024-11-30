@@ -37,6 +37,7 @@ const DashboardButton:React.FC<DashboardButtonProps> = ({ title, icon ,onClick }
 export default function Home() {
   const router = useRouter();
   const [content, setContent] =useState('studentres');
+  const [menuVisible, setMenuVisible] = useState(false);
 
  function renderContent():JSX.Element{
   switch(content){
@@ -56,6 +57,10 @@ export default function Home() {
       return <h1>Default</h1>;
  }
 }
+function menuVisibleHandler(){
+
+  setMenuVisible(!menuVisible);
+}
   
   return (
     <div className="max-h-screen overflow-y-scroll  bg-gray-100 p-6">
@@ -65,7 +70,44 @@ export default function Home() {
   <img src="/pic.png" alt="logo" className="w-20 h-20 mx-auto my-5 rounded-full" /> 
   <div className="pb-3"><h2>Biswajit Master</h2></div>
     </div>
-      <div id="menu" className="rounded shadow-lg row-start-2 row-span-full col-span-1 col-span-1 shadow rounded-lg">
+  <div id='mobile-menu' className='block lg:hidden'>
+  { menuVisible && <div id="mobile-ops" className="fixed left-0 top-0 h-full  bg-white shadow-lg z-50 transition-transform transform translate-x-0"
+  style={{ transform: menuVisible ? 'translate-x-0' : '-translate-x-full' }}
+  > 
+   <div className=" bg-blue-600 flex justify-center flex-col items-center w-full">
+  <img src="/pic.png" alt="logo" className="w-20 h-20 mx-auto my-5 rounded-full" /> 
+  <div className="pb-3"><h2>Biswajit Master</h2></div>
+    </div>
+    <DashboardButton title="Student Information" icon={<PersonIcon  />} onClick={()=>{
+          setContent('studentres');
+        }}  />
+        <DashboardButton title="Faculty Details" icon={<SchoolIcon />}  
+        onClick={()=>{
+          setContent('faculty');
+        }}
+        />
+        <DashboardButton title="Student Electives" icon={<AssignmentIcon  />} />
+        <DashboardButton title="Student Placements" icon={<WorkIcon  />} onClick={()=>{
+          setContent('placements');
+        }} />
+        <DashboardButton title="Faculty Achievements" icon={<StarIcon  />} />
+        <DashboardButton title="Gallery" icon={<PhotoLibraryIcon  />} />
+        <DashboardButton title="Courses" icon={<MenuBookIcon  />} 
+        onClick={()=>{
+          setContent('Courses');
+        }}
+        />
+        <DashboardButton title="NBA Details" icon={<BusinessIcon  />} />
+        <DashboardButton title="Classrooms & Labs" icon={<ScienceIcon  />} />
+      </div> }
+      <div id="overlay" className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ${menuVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={menuVisibleHandler}></div>
+  </div>
+
+
+
+
+
+    <div id="menu" className="rounded shadow-lg row-start-2 row-span-full col-span-1 col-span-1 shadow rounded-lg">
         <DashboardButton title="Student Information" icon={<PersonIcon  />} onClick={()=>{
           setContent('studentres');
         }}  />
@@ -88,7 +130,14 @@ export default function Home() {
         <DashboardButton title="NBA Details" icon={<BusinessIcon  />} />
         <DashboardButton title="Classrooms & Labs" icon={<ScienceIcon  />} />
       </div>
+
+      
       <div id="main-container" className=" col-start-2 col-span-3 row-start-1 row-span-4 max-h-screen overflow-y-scroll">
+      <div id="three-line" className="block lg:hidden text-slate-950">
+        <button onClick={menuVisibleHandler} className="text-2xl text-slate-950">
+          &#9776;
+        </button>
+      </div>
         {renderContent()}
       </div>
        

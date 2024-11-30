@@ -42,35 +42,33 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
- <div  className=" grid grid-cols-7 items-center justify-around  bg-white shadow-md  border border-gray-200 text-slate-950">
-              <div><span >Name</span> </div>
-              <div><span >Roll</span> </div>
-              <div><span >Gender</span> </div>
-              <div><span>Mobile</span> </div>
-              <div><span >Company</span> </div>
-              <div><span>Post</span> </div>
-              <div><span>Salary</span> </div>
-     
-          </div>
-      <div className="grid gap-6">
-        {filteredPlacements.map((placement) => (
-          <div
-            key={placement._id}
-            className="  grid grid-cols-7 items-center justify-around text-slate-950"
-      
-          >
-           
-                <div className="">{placement.NAME}</div>
-                  <div className="">{placement.ROLL}</div>
-                  <div className="">{placement.Gender}</div>
-                  <div className="">{placement.MOBILE}</div>
-                  <div className="">{placement.Company}</div>
-                  <div className="">{placement.Post}</div>
-                  <div className="">{placement.Salary || 'N/A'}</div>
-     
-          </div>
-        ))}
+<div className="overflow-x-scroll sm:overflow-hidden">
+  <div className="min-w-full grid grid-cols-7 items-center justify-around bg-white shadow-md border border-gray-200 text-slate-950">
+    <div><span>Name</span></div>
+    <div><span>Roll</span></div>
+    <div><span>Gender</span></div>
+    <div><span>Mobile</span></div>
+    <div><span>Company</span></div>
+    <div><span>Post</span></div>
+    <div><span>Salary</span></div>
+  </div>
+  <div className="grid gap-6">
+    {filteredPlacements.map((placement) => (
+      <div
+        key={placement._id}
+        className="min-w-max sm:min-w-full grid grid-cols-7 items-center justify-around text-slate-950"
+      >
+        <div className="">{placement.NAME}</div>
+        <div className="">{placement.ROLL}</div>
+        <div className="">{placement.Gender}</div>
+        <div className="">{placement.MOBILE}</div>
+        <div className="">{placement.Company}</div>
+        <div className="">{placement.Post}</div>
+        <div className="">{placement.Salary || 'N/A'}</div>
       </div>
+    ))}
+  </div>
+</div>
     </div>
   );
 };
