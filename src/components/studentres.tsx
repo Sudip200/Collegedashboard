@@ -36,7 +36,7 @@ export default function StudentResult() {
     const searchQueryLower = searchQuery.toLowerCase();
     const fetchResults = async () => {
       try {
-        const response = await fetch('http://localhost:3001/results',
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/results`,
 
         { mode: 'cors',  
           credentials: 'include',}

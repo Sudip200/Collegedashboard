@@ -16,7 +16,7 @@ export default function Courses() {
   const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(()=>{
-    fetch('http://localhost:3001/courses',{
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/courses`,{
       mode: 'cors',
       credentials: 'include',
     })

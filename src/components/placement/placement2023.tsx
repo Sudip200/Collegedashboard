@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next';
 import PlacementList from '../placementlist';
 import { useEffect ,useState } from 'react';
 
+
 type Placement = {
   _id: string;
   ROLL: number;
@@ -22,7 +23,9 @@ const PlacementContent = () => {
   useEffect(()=>{
     const fetchPlacements = async()=>{
       try {
-        const response = await fetch('http://localhost:3001/2023-placement');
+        const apiRoute = process.env.NEXT_PUBLIC_API_URL;
+    
+        const response = await fetch(`${apiRoute}/2023-placement`);
         const data = await response.json();
         setPlacements(data);
       } catch (error) {

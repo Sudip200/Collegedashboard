@@ -15,7 +15,7 @@ const Login= () => {
           />
           <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
         </div>
-        <form action='http://localhost:3001/login' method='POST'>
+        <form action={`${process.env.NEXT_PUBLIC_API_URL}/login`} method='POST'>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
               Email

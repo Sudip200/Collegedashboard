@@ -43,7 +43,9 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 <div className="overflow-x-scroll sm:overflow-hidden">
-  <div className="min-w-full grid grid-cols-7 items-center justify-around bg-white shadow-md border border-gray-200 text-slate-950">
+  
+  <div className="grid gap-6">
+  <div className="min-w-max grid grid-cols-7 items-center justify-around bg-white shadow-md border border-gray-200 text-slate-950">
     <div><span>Name</span></div>
     <div><span>Roll</span></div>
     <div><span>Gender</span></div>
@@ -52,7 +54,7 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
     <div><span>Post</span></div>
     <div><span>Salary</span></div>
   </div>
-  <div className="grid gap-6">
+
     {filteredPlacements.map((placement) => (
       <div
         key={placement._id}

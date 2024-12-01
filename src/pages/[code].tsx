@@ -42,7 +42,7 @@ export default function Attendence() {
     const searchQueryLower = searchQuery.toLowerCase();
     const fetchResults = async () => {
       try {
-        const response = await fetch('http://localhost:3001/results',
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/results`,
 
         { mode: 'cors',  
           credentials: 'include',}
@@ -110,7 +110,7 @@ export default function Attendence() {
   }
  async function attendence(status:boolean , roll:number,id:string){  {
    if(status){
-      await fetch('http://localhost:3001/attend',{
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attend`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ export default function Attendence() {
         handleCheckboxChange(id, 'both')
       })
    }else{
-    await fetch('http://localhost:3001/attend',{
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attend`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
