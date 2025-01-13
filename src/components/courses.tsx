@@ -55,7 +55,7 @@ export default function Courses() {
                         <td>{course.Program}</td>
                         <td>{course.Stream}</td>
                         <Link href={`${course.Code}`}>
-                            <td className="text-blue-500">View</td>
+                            <td className="text-blue-500">Take Attendence</td>
                         </Link>
                     </tr>
                 ))}

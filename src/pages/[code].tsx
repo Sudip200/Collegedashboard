@@ -25,6 +25,10 @@ interface Result {
   OVERAL: string;
   MAR: number;
 }
+interface PresentationStatus{
+  status:string;
+  roll:number;
+}
 
 export default function Attendence() {
   const [results, setResults] = useState<Result[]>([]);
@@ -33,20 +37,75 @@ export default function Attendence() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
   const [ fromRoll, setFromRoll] = useState<number>(0);
+  const [isCreated,setCreated]=useState<Boolean>(false);
   const [ toRoll, setToRoll] = useState<number>( 0);
+  const [presentstatus,setPresentStatus]=useState<PresentationStatus[]>([]);
   const [ total , setTotal] = useState<number>(0);
   const router = useRouter();
+  
 
+  async function checkData(){
+    console.log(router.query.code);
+   await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attendence?CourseCode=${router.query.code}&Date=${new Date().toLocaleDateString()}`,{
+     method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      credentials:'include',
+    }).then((response)=>{
+       console.log(response)
+      return response.json()
+    }).then((data)=>{
+      setPresentStatus(data)
+      if(data.length==0){
+         createClass();
+        return;
+      }
+
+
+      data.map((item:any)=>{
+        console.log(item);
+        if(item.Status=="present"){
+         // console.log(item.roll.toString())
+          handleCheckboxChange(item.StudentId.toString(), 'p')
+      }else if(item.Status=="absent"){
+        //console.log(item.roll.toString())
+        handleCheckboxChange(item.StudentId.toString(), 'a')
+      }
+      })
+    
+     
+    })
+    
+  }
+  async function createClass(){
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/createclass`,{
+      method:'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    credentials:'include',
+
+    body:JSON.stringify({
+      CourseCode:router.query.code,
+      Date:new Date().toLocaleDateString()
+    })
+    }).then((response)=>{
+       return response.json()
+    }).then((data)=>{
+            if(data=="created"){
+              setCreated(true);
+            }else{   
+              setCreated(false) 
+            }
+    })
+  }
   // Fetch data from API
   useEffect(() => {
     const searchQueryLower = searchQuery.toLowerCase();
     const fetchResults = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/results`,
-
-        { mode: 'cors',  
-          credentials: 'include',}
-
         );
         const data = await response.json();
         setResults(data);
@@ -82,32 +141,49 @@ export default function Attendence() {
   setTotal(filteredResults.length)
     
   },[searchQuery,results,fromRoll,toRoll])
+  useEffect(()=>{
+    setTimeout(()=>{
+      checkData();
+    },1000);
+  },[])
+ function enableCheckbox(id:string,sta:string) {
+  //set checkbox true or false ,if present set 'p' id to true else set 'a' id to true
+  if(sta=='p'){
+    const checkbox = document.getElementById(id+'a');
+    if (checkbox) {
+      checkbox.removeAttribute('disabled');
+    }
+  }
 
+ }
   function handleCheckboxChange(id:string,sta:string) {
+    console.log(id,sta)
+    const checkbox = document.getElementById(id+'a');
+      const checkbox2 = document.getElementById(id+'p');
     if(sta=='p'){
-      const checkbox = document.getElementById(id+'a');
+      
       if (checkbox) {
         checkbox.setAttribute('disabled', 'true');
       }
+      if (checkbox2) {
+        //change the status of the checkbox to true and disable it
+        checkbox2.setAttribute('checked', 'true');
+        checkbox2.setAttribute('disabled', 'true');
+      }
     }else if(sta=='a'){
-      const checkbox = document.getElementById(id+'p');
+    
+      if (checkbox2) {
+        checkbox2.setAttribute('disabled', 'true');
+      }
       if (checkbox) {
+        checkbox.setAttribute('checked', 'true');
         checkbox.setAttribute('disabled', 'true');
       }
       
-    }else{
-      //disable both
-      const checkbox = document.getElementById(id+'a');
-      if (checkbox) {
-        checkbox.setAttribute('disabled', 'true');
-      }
-      const checkbox1 = document.getElementById(id+'p');
-      if (checkbox1) {
-        checkbox1.setAttribute('disabled', 'true');
-      }
     }
   
   }
+
  async function attendence(status:boolean , roll:number,id:string){  {
    if(status){
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attend`,{
@@ -115,15 +191,17 @@ export default function Attendence() {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials:'include',
         body: JSON.stringify({
           ROLL:roll,
           CourseCode:router.query.code,
-          status:'present'
+          Status:'present',
+          Date: new Date().toLocaleDateString()
         }),
       }).then((response) =>{
         console.log(response)
-        response.json()
-        handleCheckboxChange(id, 'both')
+    
+        handleCheckboxChange(id, 'p')
       })
    }else{
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attend`,{
@@ -131,15 +209,17 @@ export default function Attendence() {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials:'include',
       body: JSON.stringify({
         ROLL:roll,
         CourseCode:router.query.code,
-        status:'absent'
+        Status:'absent',
+        Date:new Date().toLocaleDateString()
       }),
     }).then((response) => {
       console.log(response)
-      response.json()
-      handleCheckboxChange(id, 'both')
+
+      handleCheckboxChange(id, 'a')
     })
    }
   }
@@ -192,6 +272,9 @@ export default function Attendence() {
         <th className="py-2 px-4 bg-gray-200 text-left text-slate-900">Absent</th>
         </tr>
       </thead>
+      {/* <input type='date' onChange={(e)=>{
+        console.log(e.target.value)
+      }}/> */}
       <tbody>
         {filteredResults.map((result) => (
         <tr key={result._id} className="border-b">
@@ -200,20 +283,20 @@ export default function Attendence() {
           <td className="py-2 px-4">{result.ROLL}</td>
           <td className="py-2 px-4">
          
-            <input type="checkbox" id={result.NAME+result.ROLL+'p'} className="form-checkbox h-5 w-5 text-blue-600 " onChange={(e)=>{
+            <input type="checkbox" id={result.ROLL+'p'} className="form-checkbox h-5 w-5 text-blue-600 " onChange={(e)=>{
               if(e.target.checked){
-               attendence(true, result.ROLL, result.NAME+result.ROLL)
+               attendence(true, result.ROLL, result.ROLL.toString())
               // handleCheckboxChange(result.NAME+result.ROLL, 'p')
               }
             }
             } />
           </td>
           <td className="py-2 px-4">
-            <input   id={result.NAME+result.ROLL+'a'} type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 "  
+            <input   id={result.ROLL+'a'} type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 "  
 
             onChange={(e)=>{
               if(e.target.checked){
-                attendence(false, result.ROLL, result.NAME+result.ROLL)
+                attendence(false, result.ROLL, result.ROLL.toString())
               // handleCheckboxChange(result.NAME+result.ROLL, 'a')
               }
             }
