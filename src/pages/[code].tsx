@@ -38,13 +38,19 @@ export default function Attendence() {
   const [filteredResults, setFilteredResults] = useState<Result[]>([]);
   const [ fromRoll, setFromRoll] = useState<number>(0);
   const [isCreated,setCreated]=useState<Boolean>(false);
+  const [ready,setReady]=useState<Boolean>(false);
   const [ toRoll, setToRoll] = useState<number>( 0);
+ 
   const [presentstatus,setPresentStatus]=useState<PresentationStatus[]>([]);
   const [ total , setTotal] = useState<number>(0);
   const router = useRouter();
   
 
   async function checkData(){
+   
+    if(presentstatus.length!=0){
+      return;
+    }
     console.log(router.query.code);
    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attendence?CourseCode=${router.query.code}&Date=${new Date().toLocaleDateString()}`,{
      method:'GET',
@@ -56,23 +62,16 @@ export default function Attendence() {
        console.log(response)
       return response.json()
     }).then((data)=>{
-      setPresentStatus(data)
+     
       if(data.length==0){
          createClass();
+         setReady(true);
         return;
       }
 
-
-      data.map((item:any)=>{
-        console.log(item);
-        if(item.Status=="present"){
-         // console.log(item.roll.toString())
-          handleCheckboxChange(item.StudentId.toString(), 'p')
-      }else if(item.Status=="absent"){
-        //console.log(item.roll.toString())
-        handleCheckboxChange(item.StudentId.toString(), 'a')
-      }
-      })
+      setPresentStatus(data);
+    
+      
     
      
     })
@@ -100,8 +99,26 @@ export default function Attendence() {
             }
     })
   }
+  function presentationStatus(data:any){
+    data.map((item:any)=>{
+      
+      console.log(item);
+      if(item.Status=="present"){
+       // console.log(item.roll.toString())
+        handleCheckboxChange(item.StudentId.toString(), 'p')
+    }else if(item.Status=="absent"){
+      //console.log(item.roll.toString())
+      handleCheckboxChange(item.StudentId.toString(), 'a')
+    }
+    }
+
+  
+  )
+  setReady(true);
+  }
   // Fetch data from API
   useEffect(() => {
+   
     const searchQueryLower = searchQuery.toLowerCase();
     const fetchResults = async () => {
       try {
@@ -142,10 +159,14 @@ export default function Attendence() {
     
   },[searchQuery,results,fromRoll,toRoll])
   useEffect(()=>{
-    setTimeout(()=>{
-      checkData();
-    },1000);
-  },[])
+    if(router.isReady){ 
+      checkData()
+    if(presentstatus.length!=0){
+      presentationStatus(presentstatus)
+    }
+    
+    }
+  },[router.isReady,presentationStatus])
  function enableCheckbox(id:string,sta:string) {
   //set checkbox true or false ,if present set 'p' id to true else set 'a' id to true
   if(sta=='p'){
@@ -226,7 +247,9 @@ export default function Attendence() {
  }
   return (
     <div className=" bg-gray-100 h-screen min-w-max">
-      <h1 className="text-3xl font-bold text-center mb-8 text-slate-900">Take Attendence {router.query.code}  </h1>
+      <h1 className="text-3xl font-bold text-center mb-8 text-slate-900">Take Attendence {router.query.code} for Date   </h1> <br>
+      </br>
+      <h2 className='text-slate-900 text-center mb-6 text-2xl font-mono'>{new Date().toLocaleDateString() } </h2>
       {/* Select roll number range */}
         
       <input
@@ -255,14 +278,14 @@ export default function Attendence() {
             />
         </div>
 
-      <div className="text-slate-900">
+      <div className="text-slate-900 mb-6 font-serif">
         <p>Total number of students: {total}</p>
         
       </div>
 
 
 
-    <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden text-slate-950">
+   {ready && <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden text-slate-950">
       <thead>
         <tr>
         
@@ -307,7 +330,7 @@ export default function Attendence() {
         </tr>
         ))}
       </tbody>
-    </table>
+    </table> }
 
      
     </div>

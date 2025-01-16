@@ -34,7 +34,7 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
   }, [searchQuery, placements]);
 
   return (
-    <div className="container ">
+    <div className="container border">
       <input
         type="text"
         placeholder="Search by name, company, or post"
