@@ -18,6 +18,8 @@ import ScienceIcon from '@mui/icons-material/Science';
 import StudentResult from "../components/studentres";
 import Courses from "@/components/courses";
 import FacultyList from "@/components/facultylist";
+import CreateNotification from "@/components/createnotice";
+import { NotificationAdd } from "@mui/icons-material";
 const inter = Inter({ subsets: ["latin"] });
 interface DashboardButtonProps {
   title: string;
@@ -50,6 +52,8 @@ export default function Home() {
       return <Courses />;
     case 'placements':
       return <PlacementContent />;
+    case 'createnotice':
+      return <CreateNotification/>;
     
     case 'achievements':
       return <h1>Achievements</h1>;
@@ -93,6 +97,11 @@ function menuVisibleHandler(){
           setContent('placements');
         }} />
         <DashboardButton title="Faculty Achievements" icon={<StarIcon  />} />
+        <DashboardButton title="Create Notice" icon={<NotificationAdd/>} 
+        onClick={()=>{
+          setContent('createnotice');
+        }}
+        />
         <DashboardButton title="Gallery" icon={<PhotoLibraryIcon  />} />
         <DashboardButton title="Courses" icon={<MenuBookIcon  />} 
         onClick={()=>{
@@ -127,6 +136,11 @@ function menuVisibleHandler(){
         <DashboardButton title="Courses" icon={<MenuBookIcon  />} 
         onClick={()=>{
           setContent('Courses');
+        }}
+        />
+         <DashboardButton title="Create Notice" icon={<NotificationAdd/>} 
+        onClick={()=>{
+          setContent('createnotice');
         }}
         />
         <DashboardButton title="NBA Details" icon={<BusinessIcon  />} />

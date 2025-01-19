@@ -40,7 +40,7 @@ export default function Attendence() {
   const [isCreated,setCreated]=useState<Boolean>(false);
   const [ready,setReady]=useState<Boolean>(false);
   const [ toRoll, setToRoll] = useState<number>( 0);
- 
+ const [date,setDate] =useState<string>('');
   const [presentstatus,setPresentStatus]=useState<PresentationStatus[]>([]);
   const [ total , setTotal] = useState<number>(0);
   const router = useRouter();
@@ -90,9 +90,12 @@ export default function Attendence() {
       Date:new Date().toLocaleDateString()
     })
     }).then((response)=>{
-       return response.json()
+        console.log(1)
+       return response.text()
+
     }).then((data)=>{
-            if(data=="created"){
+      console.log(data)
+            if(data === "created"){
               setCreated(true);
             }else{   
               setCreated(false) 
@@ -160,7 +163,9 @@ export default function Attendence() {
   },[searchQuery,results,fromRoll,toRoll])
   useEffect(()=>{
     if(router.isReady){ 
-      checkData()
+      checkData();
+      let date= new Date().toLocaleDateString();
+      setDate(date)
     if(presentstatus.length!=0){
       presentationStatus(presentstatus)
     }
@@ -249,7 +254,8 @@ export default function Attendence() {
     <div className=" bg-gray-100 h-screen min-w-max">
       <h1 className="text-3xl font-bold text-center mb-8 text-slate-900">Take Attendence {router.query.code} for Date   </h1> <br>
       </br>
-      <h2 className='text-slate-900 text-center mb-6 text-2xl font-mono'>{new Date().toLocaleDateString() } </h2>
+      
+      <h2 className='text-slate-900 text-center mb-6 text-2xl font-mono'> {date}</h2>
       {/* Select roll number range */}
         
       <input

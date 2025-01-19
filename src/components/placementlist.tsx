@@ -21,22 +21,26 @@ type PlacementListProps = {
 const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPlacements, setFilteredPlacements] = useState(placements);
+  const [totalStudent,setTotalStudent]= useState(0);
   const [year, setYear] = useState(2023);
-  useEffect(() => {
-    console.log('running effect');
+  const dualChange =()=>{
     const query = searchQuery.toLowerCase();
+    let yearPlacement=placements.filter((({Year})=>Year === year))
     setFilteredPlacements(
-      placements.filter(
-        ({ NAME, Company, Post,Year}) =>
+      yearPlacement.filter(
+        ({ NAME, Company, Post}) =>
           NAME.toLowerCase().includes(query) ||
           Company.toLowerCase().includes(query) ||
           Post.toLowerCase().includes(query) 
-        
-
       )
     );
-    setFilteredPlacements(placements.filter(({Year})=>Year===year));
-  }, [searchQuery, placements, year]);
+    setTotalStudent(filteredPlacements.length);
+  }
+  useEffect(() => {
+    console.log('running effect');
+    dualChange();
+  }, [searchQuery, placements,year]);
+ 
 
   return (
     <div className="container border">
@@ -58,6 +62,7 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
           <option value={2021}>2021</option>
         </select>
       </div>
+      <div className='text-slate-800'> Total number of student {totalStudent}</div>
 <div className="overflow-x-scroll sm:overflow-hidden">
   
   <div className="grid gap-6">
