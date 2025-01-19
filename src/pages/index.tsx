@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import ScienceIcon from '@mui/icons-material/Science';
 import StudentResult from "../components/studentres";
 import Courses from "@/components/courses";
+import FacultyList from "@/components/facultylist";
 const inter = Inter({ subsets: ["latin"] });
 interface DashboardButtonProps {
   title: string;
@@ -44,11 +45,12 @@ export default function Home() {
     case 'studentres':
       return <StudentResult />;
     case 'faculty':
-      return <h1>Faculty</h1>;
+      return <FacultyList/>;
     case 'Courses':
       return <Courses />;
     case 'placements':
       return <PlacementContent />;
+    
     case 'achievements':
       return <h1>Achievements</h1>;
     case 'gallery':
