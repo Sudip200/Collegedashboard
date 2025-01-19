@@ -11,6 +11,7 @@ type Placement = {
   Company: string;
   Salary?: string;
   Post: string;
+  Year: number;
 };
 
 type PlacementListProps = {
@@ -20,18 +21,22 @@ type PlacementListProps = {
 const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredPlacements, setFilteredPlacements] = useState(placements);
-
+  const [year, setYear] = useState(2023);
   useEffect(() => {
+    console.log('running effect');
     const query = searchQuery.toLowerCase();
     setFilteredPlacements(
       placements.filter(
-        ({ NAME, Company, Post }) =>
+        ({ NAME, Company, Post,Year}) =>
           NAME.toLowerCase().includes(query) ||
           Company.toLowerCase().includes(query) ||
-          Post.toLowerCase().includes(query)
+          Post.toLowerCase().includes(query) 
+        
+
       )
     );
-  }, [searchQuery, placements]);
+    setFilteredPlacements(placements.filter(({Year})=>Year===year));
+  }, [searchQuery, placements, year]);
 
   return (
     <div className="container border">
@@ -42,6 +47,17 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+      <div>
+        <select
+          value={year}
+          onChange={(e) => setYear(Number(e.target.value))}
+          className="p-2 border rounded text-slate-950"
+        >
+          <option value={2023}>2023</option>
+          <option value={2022}>2022</option>
+          <option value={2021}>2021</option>
+        </select>
+      </div>
 <div className="overflow-x-scroll sm:overflow-hidden">
   
   <div className="grid gap-6">
@@ -56,16 +72,17 @@ const PlacementList: React.FC<PlacementListProps> = ({ placements }) => {
   </div>
 
     {filteredPlacements.map((placement) => (
+      
       <div
         key={placement._id}
         className="min-w-max sm:min-w-full grid grid-cols-7 items-center justify-around text-slate-950"
       >
-        <div className="">{placement.NAME}</div>
-        <div className="">{placement.ROLL}</div>
-        <div className="">{placement.Gender}</div>
-        <div className="">{placement.MOBILE}</div>
-        <div className="">{placement.Company}</div>
-        <div className="">{placement.Post}</div>
+        <div className="">{placement.NAME || 'N/A'}</div>
+        <div className="">{placement.ROLL || 'N/A'}</div>
+        <div className="">{placement.Gender || 'N/A'}</div>
+        <div className="">{placement.MOBILE || 'N/A'}</div>
+        <div className="">{placement.Company || 'N/A'}</div>
+        <div className="">{placement.Post || 'N/A'}</div>
         <div className="">{placement.Salary || 'N/A'}</div>
       </div>
     ))}

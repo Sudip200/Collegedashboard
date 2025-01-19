@@ -13,6 +13,7 @@ type Placement = {
   Company: string;
   Salary?: string;
   Post: string;
+  Year: number;
 };
 
 
